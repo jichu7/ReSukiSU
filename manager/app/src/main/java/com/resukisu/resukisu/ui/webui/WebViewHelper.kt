@@ -23,6 +23,7 @@ import com.resukisu.resukisu.ui.util.createRootShell
 import com.resukisu.resukisu.ui.viewmodel.ModuleViewModel
 import com.resukisu.resukisu.ui.viewmodel.SuperUserViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
@@ -37,7 +38,11 @@ internal suspend fun prepareWebView(
     moduleViewModel: ModuleViewModel,
 ) {
     withContext(Dispatchers.IO) {
-        moduleViewModel.fetchModuleList()
+        suspendCancellableCoroutine { continuation ->
+            moduleViewModel.fetchModuleList(callBack = {
+                if (continuation.isActive) continuation.resume(Unit) { _, _, _ -> }
+            })
+        }
 
         val moduleInfo = moduleViewModel.moduleList.find { info -> info.id == moduleId }
 
