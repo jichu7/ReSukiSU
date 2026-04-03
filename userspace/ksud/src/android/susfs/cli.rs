@@ -1,7 +1,10 @@
 use anyhow::Result;
 use clap::{Args, Parser, Subcommand};
 
-use crate::android::susfs::api::{self};
+use crate::android::susfs::{
+    api::{self},
+    config,
+};
 
 #[derive(Debug, Args)]
 pub struct SusfsArgs {
@@ -144,21 +147,27 @@ pub fn run_main(command: SuSFSSubCommands) -> Result<()> {
     //let command = SuSFSSubCommands::try_parse_from(args)?;
     match command {
         SuSFSSubCommands::AddSusPath { path } => {
+            config::operation::add::add_sus_path(&path);
             api::add_sus_path(&api::SusPathType::Normal, &path)?;
         }
         SuSFSSubCommands::AddSusPathLoop { path } => {
+            config::operation::add::add_sus_path_loop(&path);
             api::add_sus_path(&api::SusPathType::Loop, &path)?;
         }
         SuSFSSubCommands::AddSusKstat { path } => {
+            config::operation::add::add_sus_kstat(&path);
             api::add_sus_kstat(path)?;
         }
         SuSFSSubCommands::UpdateSusKstat { path } => {
+            config::operation::add::add_sus_kstat_update(&path);
             api::update_sus_kstat(path)?;
         }
         SuSFSSubCommands::UpdateSusKstatFullClone { path } => {
+            config::operation::add::add_sus_kstat_full_clone(&path);
             api::update_sus_kstat_full_clone(path)?;
         }
         SuSFSSubCommands::SetUname { release, version } => {
+            config::operation::add::set_uname(&release, &version);
             api::set_uname(&release, &version)?;
         }
         SuSFSSubCommands::EnableLog { enabled } => {
@@ -175,9 +184,11 @@ pub fn run_main(command: SuSFSSubCommands) -> Result<()> {
             api::add_open_redirect(target_path, redirected_path, uid_scheme)?;
         }
         SuSFSSubCommands::AddSusMap { path } => {
+            config::operation::add::add_sus_map(&path);
             api::add_sus_map(path)?;
         }
         SuSFSSubCommands::EnableAvcLogSpoofing { enabled } => {
+            config::operation::add::enable_avc_spoofing(enabled);
             api::enable_avc_log_spoofing(enabled)?;
         }
         SuSFSSubCommands::Show { info_type } => match info_type {
@@ -192,6 +203,21 @@ pub fn run_main(command: SuSFSSubCommands) -> Result<()> {
             }
         },
         SuSFSSubCommands::AddSusKstatStatically(args) => {
+            config::operation::add::add_sus_kstat_statically(
+                &args.path,
+                &args.ino,
+                &args.dev,
+                &args.nlink,
+                &args.size,
+                &args.atime,
+                &args.atime_nsec,
+                &args.mtime,
+                &args.mtime_nsec,
+                &args.ctime,
+                &args.ctime_nsec,
+                &args.blocks,
+                &args.blksize,
+            );
             api::add_sus_kstat_statically(
                 &args.path,
                 &args.ino,

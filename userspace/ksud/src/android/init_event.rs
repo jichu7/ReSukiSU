@@ -127,6 +127,11 @@ pub fn on_post_data_fs() -> Result<()> {
         warn!("load umount config failed: {e}");
     }
 
+    // Load susfs config
+    if let Err(e) = crate::android::susfs::on_post_fs_data() {
+        warn!("load susfs config failed: {e}");
+    }
+
     run_stage("post-mount", true);
 
     std::env::set_current_dir("/").with_context(|| "failed to chdir to /")?;
