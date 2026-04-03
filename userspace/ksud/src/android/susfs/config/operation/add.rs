@@ -14,7 +14,7 @@ where
         .sus_path
         .insert(path.as_ref().to_str().unwrap().to_string());
 
-    save_config(config);
+    save_config(&config);
 }
 
 pub fn set_uname<S>(release: &S, version: &S)
@@ -27,7 +27,7 @@ where
     config.common.version = version.to_string();
     config.common.release = release.to_string();
 
-    save_config(config);
+    save_config(&config);
 }
 
 pub fn add_sus_path_loop<P>(path: P)
@@ -42,7 +42,7 @@ where
         .sus_path_loop
         .insert(path.as_ref().to_str().unwrap().to_string());
 
-    save_config(config);
+    save_config(&config);
 }
 
 pub fn add_sus_map<P>(path: P)
@@ -56,7 +56,7 @@ where
         .sus_map
         .insert(path.as_ref().to_str().unwrap().to_string());
 
-    save_config(config);
+    save_config(&config);
 }
 
 pub fn enable_avc_spoofing(enabled: u8) {
@@ -65,7 +65,7 @@ pub fn enable_avc_spoofing(enabled: u8) {
     };
     config.common.avc_spoofing = enabled == 1;
 
-    save_config(config);
+    save_config(&config);
 }
 
 pub fn add_sus_kstat<P>(path: P)
@@ -80,7 +80,7 @@ where
         .sus_kstat
         .insert(path.as_ref().to_str().unwrap().to_string());
 
-    save_config(config);
+    save_config(&config);
 }
 
 pub fn add_sus_kstat_update<P>(path: P)
@@ -95,7 +95,7 @@ where
         .update_kstat
         .insert(path.as_ref().to_str().unwrap().to_string());
 
-    save_config(config);
+    save_config(&config);
 }
 
 pub fn add_sus_kstat_full_clone<P>(path: P)
@@ -110,7 +110,7 @@ where
         .full_clone
         .insert(path.as_ref().to_str().unwrap().to_string());
 
-    save_config(config);
+    save_config(&config);
 }
 
 #[allow(clippy::too_many_arguments)]

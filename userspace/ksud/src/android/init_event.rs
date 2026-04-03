@@ -128,6 +128,7 @@ pub fn on_post_data_fs() -> Result<()> {
     }
 
     // Load susfs config
+    #[cfg(all(target_os = "android", target_arch = "aarch64"))]
     if let Err(e) = crate::android::susfs::on_post_fs_data() {
         warn!("load susfs config failed: {e}");
     }

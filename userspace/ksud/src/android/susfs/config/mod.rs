@@ -7,49 +7,50 @@ use serde::{Deserialize, Serialize};
 use crate::defs;
 
 #[derive(Serialize, Deserialize)]
-struct Data {
-    common: Common,
-    sus_path: SusPath,
-    sus_map: HashSet<String>,
-    kstat: SusKstat,
+pub struct Data {
+    pub common: Common,
+    pub sus_path: SusPath,
+    pub sus_map: HashSet<String>,
+    pub kstat: SusKstat,
 }
 
 #[derive(Serialize, Deserialize)]
-struct Common {
-    version: String,
-    release: String,
-    avc_spoofing: bool,
+pub struct Common {
+    pub version: String,
+    pub release: String,
+    pub avc_spoofing: bool,
 }
 
 #[derive(Serialize, Deserialize)]
-struct SusPath {
-    sus_path_loop: HashSet<String>,
-    sus_path: HashSet<String>,
+pub struct SusPath {
+    pub sus_path_loop: HashSet<String>,
+    pub sus_path: HashSet<String>,
 }
 
+#[allow(clippy::struct_field_names)]
 #[derive(Serialize, Deserialize)]
-struct SusKstat {
-    sus_kstat: HashSet<String>,
-    update_kstat: HashSet<String>,
-    full_clone: HashSet<String>,
-    statically: HashSet<SusKstatStatically>,
+pub struct SusKstat {
+    pub sus_kstat: HashSet<String>,
+    pub update_kstat: HashSet<String>,
+    pub full_clone: HashSet<String>,
+    pub statically: HashSet<SusKstatStatically>,
 }
 
 #[derive(Serialize, Hash, PartialEq, Eq, PartialOrd, Ord, Deserialize)]
-struct SusKstatStatically {
-    path: String,
-    ino: String,
-    dev: String,
-    nlink: String,
-    size: String,
-    atime: String,
-    atime_nsec: String,
-    mtime: String,
-    mtime_nsec: String,
-    ctime: String,
-    ctime_nsec: String,
-    blocks: String,
-    blksize: String,
+pub struct SusKstatStatically {
+    pub path: String,
+    pub ino: String,
+    pub dev: String,
+    pub nlink: String,
+    pub size: String,
+    pub atime: String,
+    pub atime_nsec: String,
+    pub mtime: String,
+    pub mtime_nsec: String,
+    pub ctime: String,
+    pub ctime_nsec: String,
+    pub blocks: String,
+    pub blksize: String,
 }
 
 impl Default for Data {
@@ -75,7 +76,7 @@ impl Default for Data {
     }
 }
 
-fn save_config(config: Data) {
+fn save_config(config: &Data) {
     let Ok(string) = serde_json::to_string_pretty(&config) else {
         log::warn!("failed to deserialize susfs string");
         return;
@@ -85,12 +86,12 @@ fn save_config(config: Data) {
     }
 }
 
-fn read_config() -> Option<Data> {
+pub fn read_config() -> Option<Data> {
     let string = match fs::read_to_string(defs::SUSFS_CONFUG) {
         Ok(s) => s,
         Err(e) => {
             log::warn!("failed to read susfs config, Err: {e}, will use default config");
-            save_config(Data::default());
+            save_config(&Data::default());
             fs::read_to_string(defs::SUSFS_CONFUG).unwrap()
         }
     };
