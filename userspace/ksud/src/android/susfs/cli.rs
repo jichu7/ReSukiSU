@@ -26,6 +26,7 @@ pub enum SuSFSSubCommands {
     },
     ///  The only difference to add_sus_path is that the added sus_path via this cli will be flagged as SUS_PATH again for the app process when it is being spawned by zygote and marked umounted
     /// Also it does not check if the path is existed or not, instead it checks for empty string only, so be careful what to add.
+    #[command(name = "add_sus_path_loop")]
     AddSusPathLoop {
         #[arg(help = "Path not inside sdcard")]
         path: String,
