@@ -16,6 +16,7 @@ pub struct SusfsArgs {
 }
 
 #[derive(Debug, Subcommand)]
+#[allow(clippy::large_enum_variant)]
 pub enum SuSFSSubCommands {
     ///  Added path and all its sub-paths will be hidden for umounted app process from several syscalls
     /// Please be reminded that if the target path has upper mounts then make sure the proper layer is added, otherwise it may not be effective for the target process.
@@ -97,7 +98,33 @@ pub enum SuSFSSubCommands {
     },
     /// (Advanced) Add sus kstat statically with manual or default values
     #[command(name = "add_sus_kstat_statically")]
-    AddSusKstatStatically(Box<AddSusKstatStaticallyArgs>),
+    AddSusKstatStatically {
+        path: String,
+        #[arg(default_value = "default")]
+        ino: String,
+        #[arg(default_value = "default")]
+        dev: String,
+        #[arg(default_value = "default")]
+        nlink: String,
+        #[arg(default_value = "default")]
+        size: String,
+        #[arg(default_value = "default")]
+        atime: String,
+        #[arg(default_value = "default")]
+        atime_nsec: String,
+        #[arg(default_value = "default")]
+        mtime: String,
+        #[arg(default_value = "default")]
+        mtime_nsec: String,
+        #[arg(default_value = "default")]
+        ctime: String,
+        #[arg(default_value = "default")]
+        ctime_nsec: String,
+        #[arg(default_value = "default")]
+        blocks: String,
+        #[arg(default_value = "default")]
+        blksize: String,
+    },
 }
 
 #[derive(Subcommand, Debug)]
@@ -105,35 +132,6 @@ pub enum ShowType {
     Version,
     EnabledFeatures,
     Variant,
-}
-
-#[derive(Debug, Args)]
-pub struct AddSusKstatStaticallyArgs {
-    path: String,
-    #[arg(default_value = "default")]
-    ino: String,
-    #[arg(default_value = "default")]
-    dev: String,
-    #[arg(default_value = "default")]
-    nlink: String,
-    #[arg(default_value = "default")]
-    size: String,
-    #[arg(default_value = "default")]
-    atime: String,
-    #[arg(default_value = "default")]
-    atime_nsec: String,
-    #[arg(default_value = "default")]
-    mtime: String,
-    #[arg(default_value = "default")]
-    mtime_nsec: String,
-    #[arg(default_value = "default")]
-    ctime: String,
-    #[arg(default_value = "default")]
-    ctime_nsec: String,
-    #[arg(default_value = "default")]
-    blocks: String,
-    #[arg(default_value = "default")]
-    blksize: String,
 }
 
 #[derive(Debug, Parser)]
@@ -225,37 +223,51 @@ pub fn run_main(command: SuSFSSubCommands, remove: bool) -> Result<()> {
                 api::show_variant()?;
             }
         },
-        SuSFSSubCommands::AddSusKstatStatically(args) => {
+        SuSFSSubCommands::AddSusKstatStatically {
+            path,
+            ino,
+            dev,
+            nlink,
+            size,
+            atime,
+            atime_nsec,
+            mtime,
+            mtime_nsec,
+            ctime,
+            ctime_nsec,
+            blocks,
+            blksize,
+        } => {
             config::operation::add_sus_kstat_statically(
-                &args.path,
-                &args.ino,
-                &args.dev,
-                &args.nlink,
-                &args.size,
-                &args.atime,
-                &args.atime_nsec,
-                &args.mtime,
-                &args.mtime_nsec,
-                &args.ctime,
-                &args.ctime_nsec,
-                &args.blocks,
-                &args.blksize,
+                &path,
+                &ino,
+                &dev,
+                &nlink,
+                &size,
+                &atime,
+                &atime_nsec,
+                &mtime,
+                &mtime_nsec,
+                &ctime,
+                &ctime_nsec,
+                &blocks,
+                &blksize,
                 &types,
             );
             api::add_sus_kstat_statically(
-                &args.path,
-                &args.ino,
-                &args.dev,
-                &args.nlink,
-                &args.size,
-                &args.atime,
-                &args.atime_nsec,
-                &args.mtime,
-                &args.mtime_nsec,
-                &args.ctime,
-                &args.ctime_nsec,
-                &args.blocks,
-                &args.blksize,
+                &path,
+                &ino,
+                &dev,
+                &nlink,
+                &size,
+                &atime,
+                &atime_nsec,
+                &mtime,
+                &mtime_nsec,
+                &ctime,
+                &ctime_nsec,
+                &blocks,
+                &blksize,
             )?;
         }
     }
