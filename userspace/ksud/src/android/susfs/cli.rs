@@ -145,7 +145,12 @@ pub fn run_from_args(args: &[String]) -> Result<()> {
     let parser = match SusfsParser::try_parse_from(args) {
         Ok(cli) => cli,
         Err(e) => {
-            if matches!(e.kind(), ErrorKind::DisplayHelp | ErrorKind::DisplayVersion) {
+            if matches!(
+                e.kind(),
+                ErrorKind::DisplayHelpOnMissingArgumentOrSubcommand
+                    | ErrorKind::DisplayVersion
+                    | ErrorKind::DisplayHelp
+            ) {
                 e.print()?;
                 return Ok(());
             }
