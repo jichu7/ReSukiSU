@@ -71,8 +71,3 @@ impl Default for Data {
         }
     }
 }
-
-pub enum ConfigType {
-    Add,
-    Remove,
-}

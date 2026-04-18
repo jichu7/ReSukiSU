@@ -583,7 +583,7 @@ pub fn run() -> Result<()> {
     log::info!("command: {:?}", cli.command);
 
     let result = match cli.command {
-        Commands::Susfs(args) => crate::android::susfs::cli::run_main(args.command, args.remove),
+        Commands::Susfs(args) => crate::android::susfs::cli::run_main(args.command),
         Commands::PostFsData => init_event::on_post_data_fs(),
         Commands::BootCompleted => {
             init_event::on_boot_completed();
