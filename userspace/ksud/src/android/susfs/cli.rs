@@ -235,16 +235,16 @@ pub fn run_main(command: SuSFSSubCommands) -> Result<()> {
             config::operation::add_sus_path_loop(&path);
         }
         SuSFSSubCommands::AddSusKstat { path } => {
-            api::add_sus_kstat(path)?;
+            api::add_sus_kstat(&path)?;
             config::operation::add_sus_kstat(&path);
         }
         SuSFSSubCommands::UpdateSusKstat { path } => {
-            api::update_sus_kstat(path)?;
+            api::update_sus_kstat(&path)?;
             config::operation::add_sus_kstat_update(&path);
         }
         SuSFSSubCommands::UpdateSusKstatFullClone { path } => {
             config::operation::add_sus_kstat_full_clone(&path);
-            api::update_sus_kstat_full_clone(path)?;
+            api::update_sus_kstat_full_clone(&path)?;
         }
         SuSFSSubCommands::SetUname { release, version } => {
             config::operation::set_uname(&release, &version);
@@ -264,7 +264,7 @@ pub fn run_main(command: SuSFSSubCommands) -> Result<()> {
             api::add_open_redirect(target_path, redirected_path, uid_scheme)?;
         }
         SuSFSSubCommands::AddSusMap { path } => {
-            api::add_sus_map(path)?;
+            api::add_sus_map(&path)?;
             config::operation::add_sus_map(&path);
         }
         SuSFSSubCommands::EnableAvcLogSpoofing { enabled } => {
